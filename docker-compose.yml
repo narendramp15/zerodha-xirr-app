@@ -1,0 +1,19 @@
+services:
+  api:
+    build: .
+    ports:
+      - "8000:8000"
+    env_file:
+      - .env
+    volumes:
+      - ./backend/app:/app/app:ro
+  web:
+    image: node:20
+    working_dir: /frontend
+    command: bash -lc "npm install && npm run dev -- --host"
+    ports:
+      - "5173:5173"
+    volumes:
+      - ./frontend:/frontend
+    environment:
+      - VITE_API_BASE=http://localhost:8000
